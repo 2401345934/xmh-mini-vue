@@ -16,7 +16,6 @@ function createGetter(isReadonly: boolean = false, shallow: boolean = false) {
     } else if (key === ReactiveFlags.IS_READONLY) {
       return isReadonly
     }
-
     // shallow
     if (shallow) {
       return res
