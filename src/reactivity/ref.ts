@@ -57,3 +57,23 @@ export function unRef(value: any) {
   return isRef(value) ? value._value : value
 }
 
+
+export function proxyRefs(objectWithRefs: any) {
+  return new Proxy(objectWithRefs, {
+    get(target, key) {
+      return unRef(Reflect.get(target, key))
+    },
+    set(target, key, value) {
+      // 如果 是 ref  替换掉 不是  的话 就修改他的 .value
+      // 原来 是 ref  并且 新值 不是 ref  修改原来的 ref 和新的值
+      if (isRef(target[key]) && !isRef(value)) {
+        return (target[key].value = value)
+      } else {
+        return Reflect.set(target, key, value)
+      }
+
+    }
+  })
+}
+
+
