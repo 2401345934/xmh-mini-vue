@@ -22,16 +22,21 @@ class ReactiveEffect {
 
     // 收集依赖
     // shouldTarck 做区分
+    // 如果当前 active  就不需要收集依赖 不启用 开关
     if (!this.active) {
       return this._fn()
     }
 
+    // 启用开关 收集
     shouldTrack = true
 
+    // 赋值全局变量
     activeEffect = this
 
+    // 返回值 用于return
     const result = this._fn()
 
+    // 关闭开关 重置
     shouldTrack = false
 
     return result
@@ -52,14 +57,19 @@ class ReactiveEffect {
     effect.deps.forEach((dep: any) => {
       dep.delete(effect)
     });
+    effect.deps.length = 0
   }
 }
 
 
 
 const targetMap = new Map()
+
 // 收集依赖
 export function track(target: any, key: any) {
+  // 如果不是 track 中  不往下走
+  if (!isTracking()) return
+
   // target -> key -> dep
   let depsMap = targetMap.get(target)
   // 初始化的时候 处理
@@ -73,19 +83,22 @@ export function track(target: any, key: any) {
     dep = new Set()
     depsMap.set(key, dep)
   }
-  // 如果只是单纯的 收集依赖 没有 effect 就不需要 往下走
-  if (!activeEffect) return
-  if (!shouldTrack) return
+
+  // 如果 依赖已经存在 不需要重复收集
+  if (dep.has(activeEffect)) return
   dep.add(activeEffect)
   activeEffect.deps.push(dep)
 }
 
+// 是否正在 track 中
+function isTracking() {
+  return shouldTrack && activeEffect !== undefined
+}
 
 // 触发依赖
 export function trigger(target: any, key: any) {
   let depsMap = targetMap.get(target)
   let dep = depsMap.get(key)
-
   for (const effect of dep) {
     if (effect.scheduler) {
       effect.scheduler()
