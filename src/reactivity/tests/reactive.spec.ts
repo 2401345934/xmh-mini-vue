@@ -9,4 +9,17 @@ describe("reactive", () => {
     expect(isReactive(observe)).toBe(true)
     expect(isReactive(user)).toBe(false)
   })
+
+  it('nested reactive', () => {
+    const user = {
+      six: {
+        age: 10
+      },
+      len: [{ n: '张三' }]
+    }
+    const observer = reactive(user)
+    expect(isReactive(observer.six)).toBe(true)
+    expect(isReactive(observer.len)).toBe(true)
+    expect(isReactive(observer.len[0])).toBe(true)
+  })
 })

@@ -3,7 +3,7 @@ import { readonly, isReadonly } from "../reactive"
 describe('readonly', () => {
   it('happy path readonly', () => {
     // not set
-    const user = { name: '肖明辉' }
+    const user = { name: '肖明辉', len: [{ a: 1 }] }
     const observe = readonly(user)
     expect(observe).not.toBe(user)
     expect(observe.name).toBe('肖明辉')
@@ -22,9 +22,10 @@ describe('readonly', () => {
 
   it('is readonly', () => {
     // not set
-    const user = { name: '肖明辉' }
+    const user = { name: '肖明辉', len: [{ a: 1 }] }
     const observe = readonly(user)
     expect(isReadonly(observe)).toBe(true)
     expect(isReadonly(user)).toBe(false)
+    expect(isReadonly(observe.len)).toBe(true)
   })
 })
