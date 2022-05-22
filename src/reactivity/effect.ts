@@ -65,6 +65,14 @@ class ReactiveEffect {
 
 const targetMap = new Map()
 
+
+export function trackEffect(dep: any) {
+  // 如果 依赖已经存在 不需要重复收集
+  if (dep.has(activeEffect)) return
+  dep.add(activeEffect)
+  activeEffect.deps.push(dep)
+}
+
 // 收集依赖
 export function track(target: any, key: any) {
   // 如果不是 track 中  不往下走
@@ -83,22 +91,16 @@ export function track(target: any, key: any) {
     dep = new Set()
     depsMap.set(key, dep)
   }
-
-  // 如果 依赖已经存在 不需要重复收集
-  if (dep.has(activeEffect)) return
-  dep.add(activeEffect)
-  activeEffect.deps.push(dep)
+  trackEffect(dep)
 }
 
 // 是否正在 track 中
-function isTracking() {
+export function isTracking() {
   return shouldTrack && activeEffect !== undefined
 }
 
-// 触发依赖
-export function trigger(target: any, key: any) {
-  let depsMap = targetMap.get(target)
-  let dep = depsMap.get(key)
+
+export function triggerEffect(dep: any) {
   for (const effect of dep) {
     if (effect.scheduler) {
       effect.scheduler()
@@ -106,7 +108,13 @@ export function trigger(target: any, key: any) {
       effect.run()
     }
   }
+}
 
+// 触发依赖
+export function trigger(target: any, key: any) {
+  let depsMap = targetMap.get(target)
+  let dep = depsMap.get(key)
+  triggerEffect(dep)
 }
 
 
