@@ -6,7 +6,6 @@ export function createApp(rootComponent: any) {
     mount(rootContainer: any) {
       // 先转换成 vnode
       // component -》 vnode
-
       const vnode = createVnode(rootComponent)
       render(vnode, rootContainer)
     }
