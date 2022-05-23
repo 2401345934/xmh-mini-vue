@@ -9,16 +9,19 @@
   },
   "config": {
     "commitizen": {
-			"path": "node_modules/cz-customizable"
+      "path": "node_modules/cz-customizable"
     }
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-typescript": "^7.17.12",
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
     "@types/jest": "^27.5.1",
     "babel-jest": "^28.1.0",
     "commitizen": "^4.2.4",
+    "commitlint-config-cz": "^0.13.3",
     "cz-conventional-changelog": "^3.3.0",
     "cz-customizable": "^6.3.0",
     "jest": "^28.1.0",
