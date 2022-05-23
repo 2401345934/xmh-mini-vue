@@ -5,14 +5,14 @@ import { extend } from "../shared";
 let activeEffect: any;
 let shouldTrack: any;
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn: any
   public scheduler: Function | undefined
   public deps: any;
   public active: boolean = true
   public onStop?: Function
 
-  constructor(fn: any, scheduler: Function | undefined) {
+  constructor(fn: any, scheduler?: Function | undefined) {
     this._fn = fn
     this.scheduler = scheduler
     this.deps = []
