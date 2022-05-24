@@ -7,12 +7,21 @@ export function render(vnode: any, container: any) {
 }
 
 function patch(vnode: any, container: any) {
-
-  processComponent(vnode, container)
+  // TODO: vnode 是不是 element  还是 component
+  // processElement(vnode)
+  if (vnode.type.render) {
+    processComponent(vnode, container)
+  } else {
+    processElement(vnode, container)
+  }
 }
 
 function processComponent(vnode: any, container: any) {
   mountComponent(vnode, container)
+}
+
+function processElement(vnode: any, container: any) {
+
 }
 
 

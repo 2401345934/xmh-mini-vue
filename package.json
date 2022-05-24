@@ -1,10 +1,12 @@
 {
   "name": "xmh-mini-vue",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "lib/guide-mini-vue.cjs.js",
+  "module": "lib/guide-mini-vue.esm.js",
   "scripts": {
     "test": "jest",
+    "build": "rollup -c rollup.config.js",
     "commit": "git-cz"
   },
   "config": {
@@ -26,5 +28,10 @@
     "cz-customizable": "^6.3.0",
     "jest": "^28.1.0",
     "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@rollup/plugin-typescript": "^8.3.2",
+    "rollup": "^2.74.1",
+    "tslib": "^2.4.0"
   }
 }

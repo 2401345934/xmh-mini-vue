@@ -41,9 +41,8 @@ function handleSetupResult(instance: any, setupResult: any) {
 function finisComponentSetup(instance: any) {
   const Componet = instance.type
 
-  if (!Componet.render) {
+  if (Componet.render) {
     instance.render = Componet.render
   }
-
 }
 
