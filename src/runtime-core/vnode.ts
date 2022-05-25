@@ -7,7 +7,7 @@ export function createVnode(type: any, props?: any, children?: any) {
     props,
     children,
     el: null,
-    shapeFlag: getShapeFlag(type)
+    shapeFlag: getShapeFlag(type),
   }
 
   if (typeof children === 'string') {

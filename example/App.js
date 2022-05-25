@@ -1,10 +1,8 @@
 import { h } from "../lib/guide-mini-vue.esm.js"
-
+import { Foo } from "./Foo.js"
 
 window.self = null
 export const App = {
-
-
   setup () {
     return {
       msg: "mini vue"
@@ -21,10 +19,10 @@ export const App = {
         console.log('click', e);
       }
     },
-
-      [
-        h('p', { class: ['red'] }, 'p'), h("span", { style: ['color:yellow'] }, 'hello span')
-      ]
+      // [
+      //   h('p', { class: ['red'] }, 'p'), h("span", { style: ['color:yellow'] }, 'hello span')
+      // ]
+      [h('div', {}, 'hi' + this.msg), h(Foo, { count: 1 })]
     )
   }
 }

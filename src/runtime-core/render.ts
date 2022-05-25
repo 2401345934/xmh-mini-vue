@@ -1,5 +1,5 @@
 import { ShapeFlags } from '../shared/ShapeFlags';
-import { isObject } from './../shared/index';
+import { isObject, isOn } from './../shared/index';
 import { createComponentInstance, setupComponent } from "./components"
 
 export function render(vnode: any, container: any) {
@@ -77,4 +77,3 @@ function setupRenderEffect(instance: any, initialVnode: any, container: any) {
   initialVnode.el = subTree.el
 
 }
-const isOn = (key: string) => /^on[A-Z]/.test(key)
