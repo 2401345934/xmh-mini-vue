@@ -47,15 +47,13 @@ function mountElement(vnode: any, container: any) {
   if (typeof children === 'string') {
     el.textContent = children
   } else if (Array.isArray(children)) {
-    mountChildren(vnode, container)
+    mountChildren(vnode, el)
   }
   // 设置属性
   for (const key in props) {
     const value = props[key]
     el.setAttribute(key, value)
   }
-
-
   container.append(el)
 }
 

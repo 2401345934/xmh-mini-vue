@@ -14,6 +14,7 @@ export const App = {
     // ui
     return h("div", {
       title: 'title',
+      id: "root",
       style: ['color:red']
     }, [
       h('p', { class: ['red'] }, "hello p"), h("span", { style: ['color:yellow'] }, 'hello span')
