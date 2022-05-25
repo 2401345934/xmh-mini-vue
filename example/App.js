@@ -8,7 +8,6 @@ export const App = {
     return {
       msg: "mini vue"
     }
-
   },
   render () {
     // ui
@@ -16,8 +15,11 @@ export const App = {
       title: 'title',
       id: "root",
       style: ['color:red']
-    }, [
-      h('p', { class: ['red'] }, "hello p"), h("span", { style: ['color:yellow'] }, 'hello span')
-    ])
+    },
+      this.msg
+      // [
+      //   h('p', { class: ['red'] }, "hello p"), h("span", { style: ['color:yellow'] }, 'hello span')
+      // ]
+    )
   }
 }
