@@ -38,10 +38,15 @@ function mountElement(vnode: any, container: any) {
   } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     mountChildren(vnode, el)
   }
+
   // 设置属性
   for (const key in props) {
     const value = props[key]
-    el.setAttribute(key, value)
+    if (isOn(key)) {
+      el.addEventListener(key.slice(2).toLocaleLowerCase(), value)
+    } else {
+      el.setAttribute(key, value)
+    }
   }
   container.append(el)
 }
@@ -72,3 +77,4 @@ function setupRenderEffect(instance: any, initialVnode: any, container: any) {
   initialVnode.el = subTree.el
 
 }
+const isOn = (key: string) => /^on[A-Z]/.test(key)

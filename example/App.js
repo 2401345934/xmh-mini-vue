@@ -16,7 +16,10 @@ export const App = {
     return h("div", {
       title: 'title',
       id: "root",
-      style: ['color:red']
+      style: ['color:red'],
+      onClick (e) {
+        console.log('click', e);
+      }
     },
 
       [

@@ -19,6 +19,7 @@ export function setupComponent(instance: any) {
   setupStatefulComponent(instance)
 }
 
+
 function setupStatefulComponent(instance: any) {
   const Componet = instance.type
   // ctx
@@ -26,7 +27,6 @@ function setupStatefulComponent(instance: any) {
     { _: instance },
     publicInstanceProxyHandlers
   )
-
   const { setup } = Componet
   if (setup) {
     const setupResult = setup()
@@ -34,7 +34,7 @@ function setupStatefulComponent(instance: any) {
   }
 }
 
-
+// 处理组件的 setup 的返回值
 function handleSetupResult(instance: any, setupResult: any) {
   // object
   if (typeof setupResult === 'object') {
@@ -46,6 +46,7 @@ function handleSetupResult(instance: any, setupResult: any) {
   finisComponentSetup(instance)
 }
 
+// 处理组件的 setup
 function finisComponentSetup(instance: any) {
   const Componet = instance.type
 
