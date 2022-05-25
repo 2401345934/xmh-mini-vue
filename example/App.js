@@ -12,6 +12,11 @@ export const App = {
   },
   render () {
     // ui
-    return h("div", this.msg)
+    return h("div", {
+      title: 'title',
+      style: ['color:red']
+    }, [
+      h('p', { class: ['red'] }, "hello p"), h("span", { style: ['color:yellow'] }, 'hello span')
+    ])
   }
 }

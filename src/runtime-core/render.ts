@@ -1,3 +1,4 @@
+import { isObject } from './../shared/index';
 import { createComponentInstance, setupComponent } from "./components"
 
 export function render(vnode: any, container: any) {
@@ -7,12 +8,12 @@ export function render(vnode: any, container: any) {
 }
 
 function patch(vnode: any, container: any) {
-  // TODO: vnode 是不是 element  还是 component
-  // processElement(vnode)
-  if (vnode.type.render) {
-    processComponent(vnode, container)
-  } else {
+  // 处理 element
+  if (typeof vnode.type === 'string') {
     processElement(vnode, container)
+  } else if (isObject(vnode.type)) {
+    // 处理 component 
+    processComponent(vnode, container)
   }
 }
 
@@ -21,7 +22,7 @@ function processComponent(vnode: any, container: any) {
 }
 
 function processElement(vnode: any, container: any) {
-
+  mountElement(vnode, container)
 }
 
 
@@ -39,3 +40,29 @@ function setupRenderEffect(instance: any, container: any) {
 
 }
 
+function mountElement(vnode: any, container: any) {
+  const { type, children, props } = vnode
+  const el = document.createElement(type)
+  // props
+  if (typeof children === 'string') {
+    el.textContent = children
+  } else if (Array.isArray(children)) {
+    mountChildren(vnode, container)
+  }
+  // 设置属性
+  for (const key in props) {
+    const value = props[key]
+    el.setAttribute(key, value)
+  }
+
+
+  container.append(el)
+}
+
+
+
+function mountChildren(vnode: any, container: any) {
+  vnode.children.forEach((d: any) => {
+    patch(d, container)
+  })
+}
