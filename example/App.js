@@ -22,7 +22,11 @@ export const App = {
       // [
       //   h('p', { class: ['red'] }, 'p'), h("span", { style: ['color:yellow'] }, 'hello span')
       // ]
-      [h('div', {}, 'hi' + this.msg), h(Foo, { count: 1 })]
+      [h('div', {}, 'hi' + this.msg), h(Foo, {
+        onAddFoo (a, b) {
+          console.log('我是 app 的 on add', a + b)
+        }
+      })]
     )
   }
 }
