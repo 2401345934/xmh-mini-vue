@@ -1,3 +1,4 @@
+
 export const enum ShapeFlags {
   // 是否 是 element  0 不是 1 是
   ELEMENT = 1,

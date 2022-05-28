@@ -1,3 +1,4 @@
+import { Fragment } from './vnode';
 import { ShapeFlags } from '../shared/ShapeFlags';
 import { isOn } from './../shared/index';
 import { createComponentInstance, setupComponent } from "./components"
@@ -10,13 +11,20 @@ export function render(vnode: any, container: any) {
 
 function patch(vnode: any, container: any) {
   // 处理 element
-  const { shapeFlag } = vnode;
-  if (shapeFlag & ShapeFlags.ELEMENT) {
-    processElement(vnode, container)
-  } else if (shapeFlag & ShapeFlags.STATEFULE_COMPONENT) {
-    // 处理 component
-    processComponent(vnode, container)
+  const { type, shapeFlag } = vnode;
+  switch (type) {
+    case Fragment:
+      processFragment(vnode, container)
+      break;
+    default:
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        processElement(vnode, container)
+      } else if (shapeFlag & ShapeFlags.STATEFULE_COMPONENT) {
+        // 处理 component
+        processComponent(vnode, container)
+      }
   }
+
 }
 
 function processComponent(vnode: any, container: any) {
@@ -27,6 +35,10 @@ function processElement(vnode: any, container: any) {
   mountElement(vnode, container)
 }
 
+
+function processFragment(vnode: any, container: any) {
+  mountChildren(vnode, container)
+}
 
 
 function mountElement(vnode: any, container: any) {
@@ -75,5 +87,4 @@ function setupRenderEffect(instance: any, initialVnode: any, container: any) {
 
   // 把组件的 根节点 挂载在  initialVnode 的 el
   initialVnode.el = subTree.el
-
 }

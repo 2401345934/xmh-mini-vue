@@ -8,16 +8,11 @@ export const App = {
     }
   },
   render () {
+    const app = h('div', {}, 'App')
     const foo = h(Foo, {}, {
       header: ({ age }) => h('p', {}, 'header' + age),
       footer: () => h('p', {}, 'footer')
     })
-    const foo2 = h(Foo, {}, {
-      too: () => h('p', {}, 'foo2')
-    })
-    return h('div', {}, [
-      h('div', {}, [foo]),
-      h('div', {}, [foo2])
-    ])
+    return h('div', {}, [app, foo])
   }
 }
