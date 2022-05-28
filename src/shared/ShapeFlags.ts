@@ -7,4 +7,6 @@ export const enum ShapeFlags {
   TEXT_CHILDREN = 1 << 2,
   // 子元素 是否 是 array  0 不是 1 是
   ARRAY_CHILDREN = 1 << 3,
+  // 是不是 slot chilren  0 不是 1 是
+  SLOT_CHILREN = 1 << 4,
 }

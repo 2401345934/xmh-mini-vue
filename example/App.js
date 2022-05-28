@@ -1,7 +1,6 @@
 import { h } from "../lib/guide-mini-vue.esm.js"
 import { Foo } from "./Foo.js"
 
-window.self = null
 export const App = {
   setup () {
     return {
@@ -9,24 +8,16 @@ export const App = {
     }
   },
   render () {
-    self = this
-    // ui
-    return h("div", {
-      title: 'title',
-      id: "root",
-      style: ['color:red'],
-      onClick (e) {
-        console.log('click', e);
-      }
-    },
-      // [
-      //   h('p', { class: ['red'] }, 'p'), h("span", { style: ['color:yellow'] }, 'hello span')
-      // ]
-      [h('div', {}, 'hi' + this.msg), h(Foo, {
-        onAddFoo (a, b) {
-          console.log('我是 app 的 on add', a + b)
-        }
-      })]
-    )
+    const foo = h(Foo, {}, {
+      header: ({ age }) => h('p', {}, 'header' + age),
+      footer: () => h('p', {}, 'footer')
+    })
+    const foo2 = h(Foo, {}, {
+      too: () => h('p', {}, 'foo2')
+    })
+    return h('div', {}, [
+      h('div', {}, [foo]),
+      h('div', {}, [foo2])
+    ])
   }
 }

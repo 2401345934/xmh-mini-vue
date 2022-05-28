@@ -11,10 +11,17 @@ export function createVnode(type: any, props?: any, children?: any) {
   }
 
   if (typeof children === 'string') {
-    vnode.shapeFlag = vnode.shapeFlag | ShapeFlags.TEXT_CHILDREN
+    vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN
   } else if (Array.isArray(children)) {
-    vnode.shapeFlag = vnode.shapeFlag | ShapeFlags.ARRAY_CHILDREN
+    vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN
   }
+
+  if (vnode.shapeFlag & ShapeFlags.STATEFULE_COMPONENT) {
+    if (typeof children === 'object') {
+      vnode.shapeFlag |= ShapeFlags.SLOT_CHILREN
+    }
+  }
+
   return vnode
 
 }
