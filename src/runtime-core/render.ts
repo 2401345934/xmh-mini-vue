@@ -1,4 +1,4 @@
-import { Fragment } from './vnode';
+import { Fragment, Text } from './vnode';
 import { ShapeFlags } from '../shared/ShapeFlags';
 import { isOn } from './../shared/index';
 import { createComponentInstance, setupComponent } from "./components"
@@ -15,6 +15,9 @@ function patch(vnode: any, container: any) {
   switch (type) {
     case Fragment:
       processFragment(vnode, container)
+      break;
+    case Text:
+      processText(vnode, container)
       break;
     default:
       if (shapeFlag & ShapeFlags.ELEMENT) {
@@ -87,4 +90,10 @@ function setupRenderEffect(instance: any, initialVnode: any, container: any) {
 
   // 把组件的 根节点 挂载在  initialVnode 的 el
   initialVnode.el = subTree.el
+}
+
+function processText(vnode: any, container: any) {
+  const { children } = vnode
+  const textNode = vnode.el = document.createTextNode(children)
+  container.append(textNode)
 }

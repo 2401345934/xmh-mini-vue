@@ -1,4 +1,4 @@
-import { h } from "../lib/guide-mini-vue.esm.js"
+import { h, createTextVnode } from "../lib/guide-mini-vue.esm.js"
 import { Foo } from "./Foo.js"
 
 export const App = {
@@ -13,6 +13,6 @@ export const App = {
       header: ({ age }) => h('p', {}, 'header' + age),
       footer: () => h('p', {}, 'footer')
     })
-    return h('div', {}, [app, foo])
+    return h('div', {}, [app, foo, createTextVnode('我是文本')])
   }
 }
