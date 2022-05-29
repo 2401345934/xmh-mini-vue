@@ -6,7 +6,7 @@ import { createAppApi } from './createApp';
 
 export function createRenderer(options) {
 
-  const { createElement, patchProp, insert } = options
+  const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options
   function render(vnode: any, container: any) {
     // 这里只做调用 patch 方法  方便递归处理
     return patch(vnode, container, null)
@@ -48,7 +48,7 @@ export function createRenderer(options) {
 
   function mountElement(vnode: any, container: any, parentComponent: any) {
     const { type, children, props, shapeFlag } = vnode
-    const el = vnode.el = createElement(type)
+    const el = vnode.el = hostCreateElement(type)
     // props
     if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
       el.textContent = children
@@ -59,10 +59,10 @@ export function createRenderer(options) {
     // 设置属性
     for (const key in props) {
       const value = props[key]
-      patchProp(el, key, value)
+      hostPatchProp(el, key, value)
 
     }
-    insert(el, container)
+    hostInsert(el, container)
   }
 
 
