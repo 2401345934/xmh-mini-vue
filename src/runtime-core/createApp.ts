@@ -10,8 +10,8 @@ export function createAppApi(render) {
         // component -》 vnode
         const vnode = createVnode(rootComponent)
         // 转换成真实节点
-        const container = document.querySelector(rootContainer)
-        render(vnode, container)
+        // const container = document.querySelector(rootContainer)
+        render(vnode, rootContainer)
       }
     }
   }
