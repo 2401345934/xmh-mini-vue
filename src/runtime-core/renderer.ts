@@ -2,6 +2,7 @@ import { Fragment, Text } from './vnode';
 import { ShapeFlags } from '../shared/ShapeFlags';
 import { createComponentInstance, setupComponent } from "./components"
 import { createAppApi } from './createApp';
+import { effect } from '../reactivity/effect';
 
 
 export function createRenderer(options) {
@@ -81,21 +82,29 @@ export function createRenderer(options) {
     setupRenderEffect(instance, initialVnode, container)
   }
 
-  function setupRenderEffect(instance: any, initialVnode: any, container: any) {
-    // 虚拟节点树
-    const { proxy } = instance
-    const subTree = instance.render.call(proxy)
-    patch(subTree, container, instance)
-
-    // 把组件的 根节点 挂载在  initialVnode 的 el
-    initialVnode.el = subTree.el
-  }
-
   function processText(vnode: any, container: any) {
     const { children } = vnode
     const textNode = vnode.el = document.createTextNode(children)
     container.append(textNode)
   }
+
+
+
+  // render effect
+  function setupRenderEffect(instance: any, initialVnode: any, container: any) {
+    effect(() => {
+      // 虚拟节点树
+      const { proxy } = instance
+      const subTree = instance.render.call(proxy)
+      console.log(subTree, 'subTree')
+      patch(subTree, container, instance)
+
+      // 把组件的 根节点 挂载在  initialVnode 的 el
+      initialVnode.el = subTree.el
+    });
+
+  }
+
 
 
   return {
