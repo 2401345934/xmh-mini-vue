@@ -1,33 +1,35 @@
-import { h, ref } from "../../lib/guide-mini-vue.esm.js"
+import { h, ref } from "../../lib/guide-mini-vue.esm.js";
 
 export const App = {
-  setup () {
+  name: "App",
 
-    let count = ref(0);
-    const addCount = () => {
-      console.log(100)
-      count.value++
-    }
+  setup () {
+    const count = ref(0);
+
+    const onClick = () => {
+      count.value++;
+    };
     return {
       count,
-      addCount
-    }
+      onClick,
+    };
   },
   render () {
-    return h('div',
+    return h(
+      "div",
       {
-        id: "root"
+        id: "root",
       },
       [
-        h('button',
+        h("div", {}, "count:" + this.count), // 依赖收集
+        h(
+          "button",
           {
-            onClick: this.addCount
-          }, 'click'),
-        h('p',
-          {},
-          'message :   ' + this.count
-        )
+            onClick: this.onClick,
+          },
+          "click"
+        ),
       ]
-    )
-  }
-}
+    );
+  },
+};

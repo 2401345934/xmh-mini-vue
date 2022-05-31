@@ -54,7 +54,7 @@ export function isRef(ref: any) {
 
 // 返回 ref 的value 值
 export function unRef(value: any) {
-  return isRef(value) ? value._value : value
+  return isRef(value) ? value.value : value
 }
 
 
