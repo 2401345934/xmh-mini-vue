@@ -11,11 +11,13 @@ function insert(el: any, parent: any) {
   parent.append(el)
 }
 
-function patchProp(el: any, key: any, value: any) {
+function patchProp(el: any, key: any, prevVal: any, nextVal: any) {
   if (isOn(key)) {
-    el.addEventListener(key.slice(2).toLocaleLowerCase(), value)
+    el.addEventListener(key.slice(2).toLocaleLowerCase(), nextVal)
+  } else if (nextVal === undefined || nextVal === null) {
+    el.removeAttribute(key)
   } else {
-    el.setAttribute(key, value)
+    el.setAttribute(key, nextVal)
   }
 }
 

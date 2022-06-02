@@ -63,7 +63,39 @@ export function createRenderer(options) {
     console.log(n1, 'n1')
     console.log(n2, 'n2')
 
+    const oldProps = n1.props || EMPTY_OBJ
+    const newProps = n2.props || EMPTY_OBJ
+    const el = n2.el = n1.el
+    patchProps(el, oldProps, newProps)
   }
+
+  const EMPTY_OBJ = {}
+
+
+  function patchProps(el: any, oldProps: any, newProps: any) {
+    if (oldProps !== newProps) {
+      for (const key in newProps) {
+        const prevProp = oldProps[key]
+        const nextProp = newProps[key]
+        // 新的props  不等于 老的 props  更新
+        if (prevProp !== newProps) {
+          hostPatchProp(el, key, prevProp, nextProp)
+        }
+      }
+
+      if (oldProps !== EMPTY_OBJ) {
+        // 处理 如果老的 props 不在新的 props 里面 就是删除
+        for (const key in oldProps) {
+          if (!(key in newProps)) {
+            hostPatchProp(el, key, oldProps[key], null)
+          }
+        }
+      }
+    }
+
+  }
+
+
 
   function processFragment(n1: any, n2: any, container: any, parentComponent: any) {
     mountChildren(n2, container, parentComponent)
@@ -82,7 +114,7 @@ export function createRenderer(options) {
     // 设置属性
     for (const key in props) {
       const value = props[key]
-      hostPatchProp(el, key, value)
+      hostPatchProp(el, key, null, value)
 
     }
     hostInsert(el, container)
