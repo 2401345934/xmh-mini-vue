@@ -12,6 +12,9 @@ export const hasChange = (value: any, newValue: any) => {
 
 }
 
+export const EMPTY_OBJ = {}
+
+
 // 是否是 k in obj
 export const hasOwn = (obj: any, k: any) => Object.prototype.hasOwnProperty.call(obj, k)
 

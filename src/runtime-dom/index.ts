@@ -11,6 +11,19 @@ function insert(el: any, parent: any) {
   parent.append(el)
 }
 
+function remove(el: any) {
+  const parent = el.parentNode;
+  if (parent) {
+    parent.removeChild(el)
+  }
+}
+
+
+function setElementText(el: any, text: string) {
+  el.textContent = text
+
+}
+
 function patchProp(el: any, key: any, prevVal: any, nextVal: any) {
   if (isOn(key)) {
     el.addEventListener(key.slice(2).toLocaleLowerCase(), nextVal)
@@ -24,7 +37,9 @@ function patchProp(el: any, key: any, prevVal: any, nextVal: any) {
 const renderer: any = createRenderer({
   createElement,
   insert,
-  patchProp
+  patchProp,
+  remove,
+  setElementText
 })
 
 export function createApp(...args: any[]) {
