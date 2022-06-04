@@ -7,8 +7,9 @@ function createElement(type: any) {
   return document.createElement(type)
 }
 
-function insert(el: any, parent: any) {
-  parent.append(el)
+function insert(child: any, parent: any, anchor: any) {
+  // parent.append(el)
+  parent.insertBefore(child, anchor || null)
 }
 
 function remove(el: any) {
