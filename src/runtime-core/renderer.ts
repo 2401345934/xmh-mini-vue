@@ -166,7 +166,49 @@ export function createRenderer(options) {
         i++
       }
     } else {
-      // 乱序部分
+      // 中间对比 乱序部分  记录 新的节点
+      let s1 = i, s2 = i, patched = 0;
+      const toBePatched = e2 - s2 + 1
+      // map 存储 key
+      const keyToIndexMap = new Map()
+      for (let i = s2; i <= e2; i++) {
+        // 新的节点
+        const nextChild = c2[i]
+        // key nextchild.key
+        // value index
+        keyToIndexMap.set(nextChild.key, i)
+      }
+      for (let i = s1; i <= e1; i++) {
+
+        // 如果 新节点 结束了 老节点 还有 直接结束
+        if (patched >= toBePatched) {
+          hostRemove(c1[i])
+          container;
+        }
+
+        // 老的节点
+        const prevChild = c1[i]
+        // null  undefined
+        let newIndex: any;
+        if (prevChild.key !== null) {
+          newIndex = keyToIndexMap.get(prevChild.key)
+        } else {
+          for (let j = s2; j < e2; j++) {
+            if (isSomeVnodeType(prevChild, c2[j])) {
+              newIndex = j
+              break
+            }
+          }
+        }
+
+        if (newIndex === undefined) {
+          hostRemove(prevChild.el)
+        } else {
+          patch(prevChild, c2[newIndex], container, parentComponent, null)
+          patched++
+        }
+
+      }
     }
   }
 
