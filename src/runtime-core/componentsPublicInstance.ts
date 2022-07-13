@@ -2,7 +2,8 @@ import { hasOwn } from "../shared/index"
 
 const publicPropsMap = {
   $el: (i: any) => i.vnode.el,
-  $slots: (i: any) => i.slots
+  $slots: (i: any) => i.slots,
+  $props: (i: any) => i.props
 }
 
 

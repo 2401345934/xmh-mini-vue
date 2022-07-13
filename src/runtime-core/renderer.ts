@@ -4,6 +4,7 @@ import { createComponentInstance, setupComponent } from "./components"
 import { createAppApi } from './createApp';
 import { effect } from '../reactivity/effect';
 import { EMPTY_OBJ } from '../shared';
+import { shouldUpdateComponent } from './componentUpdateUtils';
 
 
 export function createRenderer(options) {
@@ -56,7 +57,27 @@ export function createRenderer(options) {
 
   function processComponent(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
     console.log('---------------processComponent----------------')
-    mountComponent(n2, container, parentComponent, anchor)
+    if (!n1) {
+      mountComponent(n2, container, parentComponent, anchor)
+    } else {
+      updateComponent(n1, n2)
+    }
+  }
+
+
+  function updateComponent(n1: any, n2: any) {
+    // 检测是否需要更新 component
+    const instance = n2.component = n1.component
+    if (shouldUpdateComponent(n1, n2)) {
+      instance.next = n2
+      instance.update()
+      console.log('---------------updateComponent----------------')
+    } else {
+      n2.el = n1.el
+      instance.vnode = n2
+
+    }
+
   }
 
   function processElement(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
@@ -115,7 +136,6 @@ export function createRenderer(options) {
 
   // chilren 比较
   function patchKeyChildren(c1: any, c2: any, container: any, parentComponent: any, parentAnchour: any) {
-
     // 定义 索引   老的元素changed  新的元素长度
     let i = 0, l1 = c1.length, l2 = c2.length, e1 = l1 - 1, e2 = l2 - 1;
 
@@ -327,8 +347,7 @@ export function createRenderer(options) {
 
   function mountComponent(initialVnode: any, container: any, parentComponent: any, anchor: any) {
     console.log('---------------mountComponent----------------')
-
-    const instance = createComponentInstance(initialVnode, parentComponent)
+    const instance = initialVnode.component = createComponentInstance(initialVnode, parentComponent)
     setupComponent(instance)
     setupRenderEffect(instance, initialVnode, container, anchor)
   }
@@ -337,8 +356,7 @@ export function createRenderer(options) {
   // render effect
   function setupRenderEffect(instance: any, initialVnode: any, container: any, anchor: any) {
     console.log('---------------setupRenderEffect----------------')
-
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounted) {
         // 虚拟节点树
         const { proxy } = instance
@@ -348,13 +366,29 @@ export function createRenderer(options) {
         initialVnode.el = subTree.el
         instance.isMounted = true
       } else {
-        const { proxy } = instance
+        console.log('---------------update----------------')
+        const { proxy, next, vnode } = instance
+        if (next) {
+          next.el = vnode.el
+          updateComponetPreRender(instance, next)
+        }
         const subTree = instance.render.call(proxy)
         const preSubTree = instance.subTree
         instance.subTree = subTree
         patch(preSubTree, subTree, container, instance, anchor)
       }
     });
+  }
+
+  function updateComponetPreRender(instance: any, nextVnode: any) {
+
+    // 更新当前的 vnode 为 更新后的 vnode
+    instance.vnode = nextVnode
+    // 清空当前的 next
+    instance.next = null
+    // 更新当前的 props 为 更新后的 props
+    instance.props = nextVnode.props
+
   }
 
 
