@@ -5,6 +5,7 @@ import { createAppApi } from './createApp';
 import { effect } from '../reactivity/effect';
 import { EMPTY_OBJ } from '../shared';
 import { shouldUpdateComponent } from './componentUpdateUtils';
+import { queueJobs } from './scheduler';
 
 
 export function createRenderer(options) {
@@ -376,6 +377,10 @@ export function createRenderer(options) {
         const preSubTree = instance.subTree
         instance.subTree = subTree
         patch(preSubTree, subTree, container, instance, anchor)
+      }
+    }, {
+      scheduler() {
+        queueJobs(instance.update)
       }
     });
   }
