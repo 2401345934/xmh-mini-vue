@@ -32,6 +32,10 @@ function parseChildren(context: any) {
       node = parseElement(context)
     }
   }
+
+  if (!node) {
+    node = parseText(context)
+  }
   nodes.push(node)
   return nodes
 }
@@ -47,10 +51,11 @@ function parseInterpolation(context: any) {
 
   const rawContentLength = closeIndex - openDelimiter.length
 
-  const rawContent = context.source.slice(0, rawContentLength)
+  const rawContent = parseTextData(context, rawContentLength)
+
   const content = rawContent.trim()
 
-  advanceBy(context, rawContentLength + closeDelimiter.length)
+  advanceBy(context, closeDelimiter.length)
 
   return {
     type: NodeTypes.INTERPOLATION,
@@ -74,7 +79,6 @@ function advanceBy(context: any, length: number) {
 function parseElement(context: any) {
   const element = parseTag(context, TagType.Start)
   parseTag(context, TagType.End)
-  console.log(element, 'elementelementelementelementelementelement')
   return element
 }
 
@@ -84,6 +88,7 @@ function parseTag(context: any, type: TagType) {
   const tag = match[1]
   // 删除无用代码
   advanceBy(context, match[0].length)
+  // 推进
   advanceBy(context, 1)
 
   if (type === TagType.End) return
@@ -93,3 +98,20 @@ function parseTag(context: any, type: TagType) {
   }
 }
 
+function parseText(context: any): any {
+  const content = parseTextData(context, context.source.length)
+
+
+  return {
+    type: NodeTypes.TEXT,
+    content
+  }
+}
+
+function parseTextData(context: any, length: number) {
+  // 获取 context
+  const content = context.source.slice(0, length)
+  // 推进
+  advanceBy(context, content.length)
+  return content
+}
